@@ -1,0 +1,18 @@
+/frontend
+│── app/
+│   ├── layout.tsx         # Global layout (navbar, styling, etc.)
+│   ├── page.tsx           # Dashboard (main page)
+│
+│── components/
+│   ├── Navbar.tsx         # Top navigation bar
+│   ├── KPICard.tsx        # Reusable KPI cards
+│   ├── SpendChart.tsx     # Chart component (Recharts)
+│   ├── CloudButtons.tsx   # Connect AWS/Azure/GCP buttons
+│
+│── styles/
+│   ├── globals.css        # Tailwind base styles
+│
+│── lib/
+│   ├── api.ts             # API helper (fetch backend data)
+│
+│── public/                # Static assets (logos, icons, etc.)

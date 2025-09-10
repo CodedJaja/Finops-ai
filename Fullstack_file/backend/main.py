@@ -1,15 +1,12 @@
 from fastapi import FastAPI
-from .db import Base, engine
-from .routers import costs
-
-# Create all tables in the database
-Base.metadata.create_all(bind=engine)
+from routers import users, costs
 
 app = FastAPI(title="FinOps API")
 
-# Include the costs router
+# Include routers
+app.include_router(users.router, prefix="/users", tags=["Users"])
 app.include_router(costs.router, prefix="/costs", tags=["Costs"])
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to the FinOps API"}
+    return {"message": "FinOps API is running!"}

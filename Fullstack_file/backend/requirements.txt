@@ -1,6 +1,19 @@
-fastapi==0.100.0
-uvicorn[standard]==0.22.0
-boto3==1.28.0
-python-dotenv==1.0.0
-pydantic==2.6.0
-aiofiles==23.1.0
+# Core framework
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+
+# Supabase client
+supabase==2.4.0
+
+# Database and ORM
+SQLAlchemy==2.0.31
+psycopg2-binary==2.9.9
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Data validation
+pydantic==2.8.2
+
+# Utilities
+requests==2.32.3

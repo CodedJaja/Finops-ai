@@ -1,12 +1,13 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime
-from sqlalchemy.sql import func
-from .db import Base
+from pydantic import BaseModel
+from typing import Optional
 
-class Cost(Base):
-    __tablename__ = "costs"
+class Cost(BaseModel):
+    id: Optional[int] = None
+    name: str
+    amount: float
+    category: Optional[str] = None
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    amount = Column(Float, nullable=False)
-    category = Column(String, nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+class User(BaseModel):
+    id: Optional[int] = None
+    email: str
+    full_name: Optional[str] = None

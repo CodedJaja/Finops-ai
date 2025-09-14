@@ -1,12 +1,19 @@
 from fastapi import FastAPI
-from routers import users, costs
+from routers import transactions  # import your new router
+from supabase_client import supabase  # just to ensure it's initialized
 
-app = FastAPI(title="FinOps API")
+app = FastAPI(
+    title="FinOps AI Backend",
+    description="Backend API powered by FastAPI + Supabase",
+    version="1.0.0"
+)
 
-# Include routers
-app.include_router(users.router, prefix="/users", tags=["Users"])
-app.include_router(costs.router, prefix="/costs", tags=["Costs"])
 
+# Health check
 @app.get("/")
 def root():
-    return {"message": "FinOps API is running!"}
+    return {"message": "Backend running with Supabase!"}
+
+
+# Register routers
+app.include_router(transactions.router, tags=["Transactions"])

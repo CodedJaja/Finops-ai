@@ -3,87 +3,68 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sidebar } from "@/components/ui/sidebar";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { Sidebar } from "@/components/sidebar";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
 
 // Example data (replace with API call later)
-const sampleData = [
-  { date: "2025-09-01", spend: 1200 },
-  { date: "2025-09-02", spend: 1600 },
-  { date: "2025-09-03", spend: 900 },
-  { date: "2025-09-04", spend: 1400 },
-  { date: "2025-09-05", spend: 1800 },
+const data = [
+  { name: "Jan", cost: 400 },
+  { name: "Feb", cost: 300 },
+  { name: "Mar", cost: 500 },
+  { name: "Apr", cost: 200 },
 ];
 
 export default function DashboardPage() {
-  const [data, setData] = useState(sampleData);
+  const [username, setUsername] = useState("User");
 
-  // Placeholder: connect to backend later
   useEffect(() => {
-    // fetch("http://localhost:4000/api/spend/aws")
-    //   .then(res => res.json())
-    //   .then(json => setData(json));
+    // Replace with Supabase auth call later
+    setUsername("CodedJaja");
   }, []);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <Sidebar className="w-64 border-r" />
+      <Sidebar />
 
-      {/* Main content */}
-      <main className="flex-1 p-6 bg-gray-50">
-        <header className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">FinOps Dashboard</h1>
-          <Button>Export Report</Button>
-        </header>
+      {/* Main Content */}
+      <main className="flex-1 p-6 overflow-y-auto">
+        <h1 className="text-3xl font-bold mb-6">🚀 FinOps Dashboard</h1>
+        <p className="mb-4">Welcome back, {username}!</p>
 
-        {/* Spend Chart */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Cloud Spend (AWS)</CardTitle>
-          </CardHeader>
-          <CardContent className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="spend" stroke="#2563eb" strokeWidth={2} />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Cost breakdown cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>AWS</CardTitle>
+              <CardTitle>Monthly Cloud Costs</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-semibold">$1,800</p>
-              <p className="text-sm text-gray-500">This week</p>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="cost" stroke="#8884d8" />
+                </LineChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Azure</CardTitle>
+              <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-semibold">$1,200</p>
-              <p className="text-sm text-gray-500">This week</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>GCP</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-semibold">$950</p>
-              <p className="text-sm text-gray-500">This week</p>
+              <Button className="mr-2">Add Report</Button>
+              <Button variant="outline">Export Data</Button>
             </CardContent>
           </Card>
         </div>

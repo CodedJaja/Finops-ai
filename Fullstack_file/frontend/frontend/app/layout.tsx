@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import { Sidebar } from "@/components/ui/sidebar";
+import { Sidebar } from "@/components/ui/ui/sidebar";
 
 export const metadata = {
   title: "FinOps Dashboard",

@@ -1,5 +1,11 @@
-import "./globals.css";
-import { ThemeProvider } from "../context/ThemeContext";
+import "@/Styles/globals.css";
+import { Sidebar } from "@/components/sidebar";
+import { ThemeProvider } from "@/context/ThemeContext";
+
+export const metadata = {
+  title: "FinOps Dashboard",
+  description: "AI-powered FinOps tool",
+};
 
 export default function RootLayout({
   children,
@@ -9,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <Sidebar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

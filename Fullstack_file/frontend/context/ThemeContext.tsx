@@ -1,72 +1,56 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface ThemeContextProps {
   theme: string;
-  setTheme: (theme: string) => void;
+  toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextProps>({
-  theme: "light",
-  setTheme: () => {},
-});
+// Create Context
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
+// Provider
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState("light");
-  const [userId, setUserId] = useState<string | null>(null);
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    // Get current user from Supabase Auth
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (user) {
-        setUserId(user.id);
-
-        // Load settings from Supabase
-        const { data, error } = await supabase
-          .from("settings")
-          .select("theme")
-          .eq("user_id", user.id)
-          .single();
-
-        if (data?.theme) {
-          setThemeState(data.theme);
-          document.documentElement.classList.toggle("dark", data.theme === "dark");
-        }
-      }
-    };
-
-    getUser();
+    // Load theme from localStorage if it exists
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.add(savedTheme);
+    } else {
+      document.documentElement.classList.add("light");
+    }
   }, []);
 
-  const setTheme = async (newTheme: string) => {
-    setThemeState(newTheme);
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+
+    // Update state
+    setTheme(newTheme);
+
+    // Update <html> class for Tailwind dark mode
+    document.documentElement.classList.remove(theme);
+    document.documentElement.classList.add(newTheme);
+
+    // Persist preference
     localStorage.setItem("theme", newTheme);
-
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-
-    if (!userId) return;
-
-    try {
-      await supabase.from("settings").upsert({
-        user_id: userId,
-        theme: newTheme,
-      });
-    } catch (err) {
-      console.error("Error updating theme:", err);
-    }
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+// Custom hook
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used inside ThemeProvider");
+  }
+  return context;
+};

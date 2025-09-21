@@ -1,10 +1,11 @@
-import "@/Styles/globals.css";
+import "../styles/globals.css";
 import { Sidebar } from "@/components/sidebar";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { AuthProvider } from "@/context/AuthProvider";
 
 export const metadata = {
-  title: "FinOps Dashboard",
-  description: "AI-powered FinOps tool",
+  title: "Finops AI",
+  description: "AI-powered financial operations platform",
 };
 
 export default function RootLayout({
@@ -15,10 +16,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeProvider>
-          <Sidebar />
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <div className="flex">
+              <Sidebar />
+              <main className="flex-1 p-6">{children}</main>
+            </div>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );
